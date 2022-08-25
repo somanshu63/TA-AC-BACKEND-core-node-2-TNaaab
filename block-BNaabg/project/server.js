@@ -19,9 +19,11 @@ function handleRequest(req, res) {
         if(req.method == 'POST' && parsedUrl.pathname == '/users'){
             var username = JSON.parse(store).username;
             fs.open(useDir + username + '.json', "wx", (err, fd) => {
+                if(err) console.log(err);
                 fs.writeFile(fd, store, (err) => {
                     if(err) console.log(err);
                     fs.close(fd, (err) => {
+                        if(err) console.log(err);
                         res.end(`${username} successfully created`);
                     });
                 });
@@ -30,12 +32,13 @@ function handleRequest(req, res) {
         if(req.method == 'GET' && parsedUrl.pathname == '/users'){
             var username = parsedUrl.query.username;
             fs.readFile(useDir + username + '.json', (err, user) => {
+                if(err) console.log(err);
                 res.end(user);
             });
         }
         if(req.method == 'DELETE' && parsedUrl.pathname == '/users'){
             var username = parsedUrl.query.username;
-            fs.unlink(useDir + username + '.json', (err, done) => {
+            fs.unlink(useDir + username + '.json', (err) => {
                 if(err){
                      console.log(err);
                 }else{
