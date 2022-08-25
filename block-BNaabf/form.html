@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>form</title>
+    <script src="https://kit.fontawesome.com/615eec2c8f.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    body{
+        width: 200px;
+        margin: 0 auto;
+    }
+    input{
+        display: block;
+        margin: 1rem 0;
+    }
+</style>
+<body>
+<header>
+    <h1>form</h1>
+</header>
+<main>
+    <form action="/form" method="POST">
+        <label for="name">name</label>
+        <input type="text" name="name" id="name" placeholder="enter name">
+        <label for="email">email</label>
+        <input type="email" name="email" id="email" placeholder="enter email">
+        <label for="age">age</label>
+        <input type="number" name="age" id="age" placeholder="enter age">
+        <input type="submit" value="submit">
+    </form>
+    
+
+</main>
+<footer>
+
+</footer>
+</body>
