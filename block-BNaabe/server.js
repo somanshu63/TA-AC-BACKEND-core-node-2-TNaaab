@@ -6,10 +6,10 @@ var querystring = require('querystring');
 
 
 
-console.log(__dirname + `/server.js`);
+console.log(__filename);
 console.log(__dirname + `/app.js`);
 console.log(path.relative('server.js', 'index.html'));
-console.log(path.resolve() + '/index.html');
+console.log(path.join(__dirname, 'index.html'));
 
 
 var server1 = http.createServer((req, res) => {
@@ -54,27 +54,24 @@ serve2.listen(6000, () => {
 
 
 var server3 = http.createServer((req, res) => {
-    var parsedUrl = url.parse(req.url, true);
     var store = "";
-    if(req.method == 'POST' && parsedUrl.pathname == '/'){
-        req.on('data', (chunk) => {
-            store += chunk;
-        });
-        req.on('end', () => {
-            if(req.headers['content-type'] == 'application/json'){
-                res.write(store);
-                res.statusCode = 201;
-                res.end();
-            }
+    req.on('data', (chunk) => {
+        store += chunk;
+    });
+    req.on('end', () => {
+        if(req.headers['content-type'] == 'application/json'){
+            res.write(store);
+            res.statusCode = 201;
+            res.end();
+        }
 
-            if(req.headers['content-type'] == 'application/x-www-form-urlencoded'){
-                store = querystring.parse(store);
-                res.write(JSON.stringify(store));
-                res.statusCode = 201;
-                res.end();
-            }
-        });
-    }
+        if(req.headers['content-type'] == 'application/x-www-form-urlencoded'){
+            store = querystring.parse(store);
+            res.write(JSON.stringify(store));
+            res.statusCode = 201;
+            res.end();
+        }
+    });
 });
 
 server3.listen(9000, () => {
@@ -84,17 +81,18 @@ server3.listen(9000, () => {
 
 
 var server4 = http.createServer((req, res) => {
-    var parsedUrl = url.parse(req.url, true);
     var store = "";
-        req.on('data', (chunk) => {
-            store += chunk;
-        });
-        req.on('end', () => {
-            if(req.headers['content-type'] == 'application/json'){
-                res.write(`<h1>${store.name}</h1><h2>${store.email}</h2>`);
-                res.end();
-            }
-        });
+    req.on('data', (chunk) => {
+        store += chunk;
+    });
+    req.on('end', () => {
+        if(req.headers['content-type'] == 'application/json'){
+            var jsonData = JSON.parse(store);
+            res.setHeader('content-type', 'text/html');
+            res.write(`<h1>${jsonData.name}</h1><h2>${jsonData.email}</h2>`);
+            res.end();
+        }
+    });
 });
 
 server4.listen(8000, () => {
